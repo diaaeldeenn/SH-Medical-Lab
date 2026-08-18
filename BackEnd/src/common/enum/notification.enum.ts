@@ -1,0 +1,4 @@
+export enum NotificationType {
+  TEST_RESULT = "TEST_RESULT",
+  ALL_RESULTS_COMPLETED = "ALL_RESULTS_COMPLETED",
+}
