@@ -27,13 +27,13 @@ testRouter.post(
 
 testRouter.get(
   "/",
-  authentication,
   testService.getTests,
 );
 
 testRouter.get(
   "/:testId",
   authentication,
+  authorization([UserRole.SPECIALIST]),
   testService.getTestById,
 );
 
