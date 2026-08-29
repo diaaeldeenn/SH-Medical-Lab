@@ -15,7 +15,6 @@ export interface UserI {
 
 const userSchema = new Schema<UserI>(
   {
-    _id: { type: Types.ObjectId },
     name: {
       type: String,
       required: true,
