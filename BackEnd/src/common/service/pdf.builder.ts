@@ -4,6 +4,11 @@ import { ResultStatus } from "../../common/enum/result.enum.js";
 import type { ResultParameterI } from "../../DB/models/result.model.js";
 import { Gender } from "../enum/user.enum.js";
 import type { Types } from "mongoose";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const COLORS = {
   primary: "#263B3D",
@@ -20,8 +25,8 @@ const COLORS = {
 };
 
 const FONTS = {
-  regular: path.resolve("src/assets/fonts/Cairo-Regular.ttf"),
-  bold: path.resolve("src/assets/fonts/Cairo-Bold.ttf"),
+  regular: path.resolve(__dirname, "../../assets/fonts/Cairo-Regular.ttf"),
+  bold: path.resolve(__dirname, "../../assets/fonts/Cairo-Bold.ttf"),
 };
 
 interface PatientInfo {
