@@ -6,7 +6,6 @@ import { Gender } from "../enum/user.enum.js";
 import type { Types } from "mongoose";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
-import bidi from "bidi-js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -71,7 +70,9 @@ function fixArabic(text: string): string {
   if (!text) return text;
   const hasArabic = /[\u0600-\u06FF]/.test(text);
   if (!hasArabic) return text;
-  return bidi(text);
+
+  const parts = text.split(/(\s+)/);
+  return parts.reverse().join("");
 }
 
 function safeFileName(testName: string, requestNumber: string): string {
