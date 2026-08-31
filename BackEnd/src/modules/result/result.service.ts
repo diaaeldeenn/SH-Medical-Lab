@@ -14,6 +14,7 @@ import type {
 } from "../../common/middleware/schema/result.schema.js";
 import {
   buildResultPDF,
+  safeFileName,
   type CreatorI,
   type RequestWithPatientI,
 } from "../../common/service/pdf.builder.js";
@@ -579,7 +580,7 @@ class ResultService {
         throw new AppError("Result Must Be Locked Before Generating PDF", 400);
       }
 
-      const fileName = `SHL-${result._id}.pdf`;
+      const fileName = safeFileName(result.testName, request.requestNumber);
 
       res.setHeader("Content-Type", "application/pdf");
       res.setHeader(
