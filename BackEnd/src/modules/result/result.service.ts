@@ -191,6 +191,16 @@ class ResultService {
         isLocked: false,
       });
 
+      const allTestsCompleted = request.tests.every(
+        (item) => item.status === TestStatus.COMPLETED,
+      );
+
+      request.status = allTestsCompleted
+        ? RequestStatus.COMPLETED
+        : RequestStatus.IN_PROGRESS;
+
+      await request.save();
+
       const patientId = request.patient;
 
       await NotificationConfig.createAndSend({
