@@ -127,6 +127,12 @@
   html {
     @apply font-sans;
   }
+  button {
+    cursor: pointer;
+  }
+  a {
+    cursor: pointer;
+  }
 }
 
 @keyframes marquee {

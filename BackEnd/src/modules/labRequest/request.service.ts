@@ -246,18 +246,33 @@ class LabRequestService {
         );
       }
 
+      const updateFields: Record<string, Date | string> = {};
+
+      if (data.appointmentDate) {
+        updateFields["appointment.appointmentDate"] = data.appointmentDate;
+      }
+
+      if (data.appointmentTime) {
+        updateFields["appointment.appointmentTime"] = data.appointmentTime;
+      }
+
+      if (Object.keys(updateFields).length === 0) {
+        throw new AppError("No Appointment Data To Update", 400);
+      }
+
       const updatedRequest = await this.requestRepo.findOneAndUpdate({
         filter: {
           _id: request._id,
           patient: req.user._id,
         },
         update: {
-          appointment: {
-            ...request.appointment,
-            ...data,
-          },
+          $set: updateFields,
         },
       });
+
+      if (!updatedRequest) {
+        throw new AppError("Failed To Update Appointment", 400);
+      }
 
       return successResponse({
         res,

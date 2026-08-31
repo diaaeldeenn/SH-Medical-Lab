@@ -132,7 +132,7 @@ export function buildResultPDF(data: PDFReportData): PDFKit.PDFDocument {
   const PAGE_W = doc.page.width;
   const MARGIN = 40;
   const CONTENT_W = PAGE_W - MARGIN * 2;
-  const FOOTER_SPACE = 60;
+  const FOOTER_SPACE = 70;
 
   const drawHeader = () => {
     doc.save();
@@ -397,13 +397,13 @@ export function buildResultPDF(data: PDFReportData): PDFKit.PDFDocument {
     .stroke();
 
   if (data.note) {
-    const noteSpaceNeeded = 40;
+    const noteSpaceNeeded = 50;
     const pageBottom = doc.page.height - FOOTER_SPACE;
 
     if (rowY + noteSpaceNeeded > pageBottom) {
       doc.addPage();
       drawHeader();
-      rowY = MARGIN + 20;
+      rowY = MARGIN + 110;
     }
 
     rowY += 16;

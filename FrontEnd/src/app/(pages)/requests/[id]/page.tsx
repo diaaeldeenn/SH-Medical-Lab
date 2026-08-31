@@ -7,6 +7,7 @@ import { getResultsByRequest } from "@/action/result.action";
 import { RequestTestsTable } from "@/components/request/RequestTestsTable";
 import { Badge } from "@/components/ui/badge";
 import { statusLabel, statusVariant } from "@/constants/status";
+import RequestActions from "@/components/request/RequestActions";
 
 export default async function RequestDetails({
   params,
@@ -38,17 +39,29 @@ export default async function RequestDetails({
 
   const results = (await getResultsByRequest(id)).data ?? [];
 
+  const canUpdateAppointment = request.status === "PENDING";
+  const canCancelRequest = ["PENDING", "ATTENDED"].includes(request.status);
+
   return (
     <div className="min-h-screen bg-[#F4F7F6]" dir="rtl">
       <div className="max-w-4xl mx-auto px-4 py-10 space-y-6">
-        <div className="bg-white border border-[#D9E1E0] rounded-xl px-6 py-5 space-y-3">
+        <div className="bg-white border border-[#D9E1E0] rounded-xl px-6 py-5 space-y-4 shadow-sm">
           <div className="flex items-center justify-between flex-wrap gap-3">
             <h1 className="text-xl font-bold text-[#20292A]">
               طلب {request.requestNumber}
             </h1>
-            <Badge variant={statusVariant[request.status] ?? "outline"}>
-              {statusLabel[request.status] ?? request.status}
-            </Badge>
+            <div className="flex items-center gap-3">
+              <Badge variant={statusVariant[request.status] ?? "outline"}>
+                {statusLabel[request.status] ?? request.status}
+              </Badge>
+              <RequestActions
+                requestId={request._id}
+                currentDate={request.appointment.appointmentDate}
+                currentTime={request.appointment.appointmentTime}
+                canUpdateAppointment={canUpdateAppointment}
+                canCancelRequest={canCancelRequest}
+              />
+            </div>
           </div>
 
           <p className="text-sm text-[#687576]">
