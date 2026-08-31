@@ -580,8 +580,12 @@ class ResultService {
         throw new AppError("Result Must Be Locked Before Generating PDF", 400);
       }
 
-      const fileName = safeFileName(result.testName, request.requestNumber);
+      const fileName = safeFileName(
+        request.requestNumber,
+        result.test.toString(),
+      );
 
+      
       res.setHeader("Content-Type", "application/pdf");
       res.setHeader(
         "Content-Disposition",

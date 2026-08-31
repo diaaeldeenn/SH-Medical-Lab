@@ -75,12 +75,8 @@ function fixArabic(text: string): string {
   return parts.reverse().join("");
 }
 
-function safeFileName(testName: string, requestNumber: string): string {
-  const slug = testName
-    .trim()
-    .replace(/\s+/g, "-")
-    .replace(/[^\w\u0600-\u06FF-]/g, "");
-  return `SHL-${slug}-${requestNumber}.pdf`;
+function safeFileName(requestNumber: string, testId: string): string {
+  return `SHL-${requestNumber}-${testId}.pdf`;
 }
 
 function calculateAge(dateOfBirth: Date): number {
