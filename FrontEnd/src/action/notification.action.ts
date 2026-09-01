@@ -51,19 +51,16 @@ export const markAsRead = async (notificationId: string) => {
   return response;
 };
 
-export const markAllIsRead = async (notificationId: string) => {
+export const markAllAsRead = async () => {
   const token = await authToken();
 
-  const request = await fetch(
-    `${baseUrl}/notifications/read-all`,
-    {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        token,
-      },
+  const request = await fetch(`${baseUrl}/notifications/read-all`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      token,
     },
-  );
+  });
 
   const response = await request.json();
 

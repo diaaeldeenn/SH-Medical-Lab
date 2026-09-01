@@ -1,3 +1,10 @@
+import {
+  EvaluationType,
+  ParameterType,
+  SampleType,
+} from "@/constants/test.enum";
+import { Gender } from "@/constants/user.enum";
+
 export interface TestI {
   _id: string;
   nameAr: string;
@@ -5,14 +12,14 @@ export interface TestI {
   code: string;
   category: string;
   price: number;
-  sampleType: string;
+  sampleType: SampleType;
   parameters: ParameterI[];
   isDeleted: boolean;
 }
 
 export interface ParameterI {
   name: string;
-  type: string;
+  type: ParameterType;
   unit?: string;
   referenceRanges?: ReferenceRangeI[];
   evaluationLogic: EvaluationLogicI;
@@ -21,12 +28,13 @@ export interface ParameterI {
 
 export interface ReferenceRangeI {
   minAge?: number;
+  maxAge?: number;
   min: number;
   max: number;
-  gender?: string;
+  gender?: Gender;
 }
 
 export interface EvaluationLogicI {
-  type: string;
+  type: EvaluationType;
   normalValues?: string[];
 }

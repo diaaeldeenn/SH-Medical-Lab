@@ -14,3 +14,13 @@ export enum EvaluationType {
   RANGE = "range",
   NORMAL_VALUES = "normal-values",
 }
+
+export const TEST_CATEGORIES = [
+  "تحاليل الدم",
+  "وظائف الكبد",
+  "وظائف الكلى",
+  "تحاليل الغدة الدرقية",
+  "الفيتامينات",
+  "تحاليل البول",
+  "تحاليل أخرى",
+];

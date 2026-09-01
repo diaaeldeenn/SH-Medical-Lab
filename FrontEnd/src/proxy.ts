@@ -11,10 +11,19 @@ export default async function proxy(request: NextRequest) {
 
   const authPages = ["/auth/login", "/auth/register"];
 
-  const protectedPages = ["/profile","/requests"];
+  const protectedPages = [
+    "/profile",
+    "/requests",
+    "/requests/new",
+    "/specialist/requests",
+    "/tests",
+  ];
 
   const isAuthPage = authPages.includes(pathname);
-  const isProtectedPage = protectedPages.includes(pathname);
+  const isProtectedPage =
+    protectedPages.includes(pathname) ||
+    pathname.startsWith("/requests/") ||
+    pathname.startsWith("/specialist/requests/");
 
   if (token && isAuthPage) {
     return NextResponse.redirect(new URL("/", request.url));
@@ -28,5 +37,15 @@ export default async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/auth/login", "/auth/register", "/profile","/requests"],
+  matcher: [
+    "/auth/login",
+    "/auth/register",
+    "/profile",
+    "/requests",
+    "/requests/new",
+    "/requests/:id",
+    "/specialist/requests",
+    "/specialist/requests/:id",
+    "/tests",
+  ],
 };

@@ -133,7 +133,7 @@ export default function SpecialistRequestsFilters({
         <Button
           type="button"
           onClick={handleClear}
-          className="px-5 py-2 border border-[#D9E1E0] hover:border-[#263B3D] text-xs font-medium text-[#687576] hover:text-[#20292A] rounded-lg transition-colors"
+          className="px-5 py-2 border border-red-200 bg-red-50 text-red-600 hover:border-red-300 hover:bg-red-100 hover:text-red-700 text-xs font-medium rounded-lg transition-colors"
         >
           مسح
         </Button>
