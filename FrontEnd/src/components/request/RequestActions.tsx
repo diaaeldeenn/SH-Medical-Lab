@@ -117,7 +117,9 @@ export default function RequestActions({
 
             <div className="space-y-4 py-4">
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-[#687576]">التاريخ الجديد</label>
+                <label className="text-xs font-semibold text-[#687576]">
+                  التاريخ الجديد
+                </label>
                 <input
                   type="date"
                   min={todayStr}
@@ -128,7 +130,9 @@ export default function RequestActions({
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-[#687576]">الوقت الجديد</label>
+                <label className="text-xs font-semibold text-[#687576]">
+                  الوقت الجديد
+                </label>
                 <Select
                   value={newTime}
                   onValueChange={(value) => {
@@ -176,7 +180,7 @@ export default function RequestActions({
             </span>
           </DialogTrigger>
           <DialogContent className="sm:max-w-md bg-white rounded-2xl" dir="rtl">
-            <DialogHeader>
+            <DialogHeader className="pt-4">
               <DialogTitle className="text-base font-bold text-[#20292A] flex items-center gap-2">
                 <AlertTriangle className="w-5 h-5 text-red-500" />
                 تأكيد إلغاء الطلب
@@ -184,7 +188,8 @@ export default function RequestActions({
             </DialogHeader>
 
             <p className="text-xs text-[#687576] py-2">
-              هل أنت متأكد من رغبتك في إلغاء هذا الطلب؟ لا يمكن التراجع عن هذا الإجراء بعد تأكيده.
+              هل أنت متأكد من رغبتك في إلغاء هذا الطلب؟ لا يمكن التراجع عن هذا
+              الإجراء بعد تأكيده.
             </p>
 
             <DialogFooter className="flex items-center gap-2 sm:justify-start">

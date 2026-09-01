@@ -69,9 +69,7 @@ export default function ParameterFieldsetItem({
                 placeholder="Hemoglobin"
                 className="border-[#D9E1E0] text-sm"
               />
-              {fieldState.invalid && (
-                <FieldError errors={[fieldState.error]} />
-              )}
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
         />
@@ -142,9 +140,7 @@ export default function ParameterFieldsetItem({
                 placeholder="إيجابي، سلبي"
                 className="border-[#D9E1E0] text-sm"
               />
-              {fieldState.invalid && (
-                <FieldError errors={[fieldState.error]} />
-              )}
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
         />
@@ -240,13 +236,13 @@ export default function ParameterFieldsetItem({
               {fields.map((range, rangeIndex) => (
                 <div
                   key={range.id}
-                  className="grid grid-cols-2 sm:grid-cols-5 gap-2 items-end bg-[#F4F7F6] rounded-lg p-2"
+                  className="grid grid-cols-2 md:grid-cols-6 gap-2 items-end bg-[#F4F7F6] rounded-lg p-3"
                 >
                   <Controller
                     name={`parameters.${index}.referenceRanges.${rangeIndex}.gender`}
                     control={control}
                     render={({ field }) => (
-                      <Field>
+                      <Field className="col-span-1">
                         <FieldLabel className="text-[10px] text-[#687576]">
                           الجنس
                         </FieldLabel>
@@ -273,7 +269,7 @@ export default function ParameterFieldsetItem({
                     name={`parameters.${index}.referenceRanges.${rangeIndex}.minAge`}
                     control={control}
                     render={({ field }) => (
-                      <Field>
+                      <Field className="col-span-1">
                         <FieldLabel className="text-[10px] text-[#687576]">
                           أقل سن
                         </FieldLabel>
@@ -298,7 +294,7 @@ export default function ParameterFieldsetItem({
                     name={`parameters.${index}.referenceRanges.${rangeIndex}.maxAge`}
                     control={control}
                     render={({ field }) => (
-                      <Field>
+                      <Field className="col-span-1">
                         <FieldLabel className="text-[10px] text-[#687576]">
                           أكبر سن
                         </FieldLabel>
@@ -323,7 +319,10 @@ export default function ParameterFieldsetItem({
                     name={`parameters.${index}.referenceRanges.${rangeIndex}.min`}
                     control={control}
                     render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
+                      <Field
+                        className="col-span-1"
+                        data-invalid={fieldState.invalid}
+                      >
                         <FieldLabel className="text-[10px] text-[#687576]">
                           الحد الأدنى
                         </FieldLabel>
@@ -345,38 +344,43 @@ export default function ParameterFieldsetItem({
                     )}
                   />
 
-                  <div className="flex items-end gap-1">
-                    <Controller
-                      name={`parameters.${index}.referenceRanges.${rangeIndex}.max`}
-                      control={control}
-                      render={({ field, fieldState }) => (
-                        <Field className="flex-1" data-invalid={fieldState.invalid}>
-                          <FieldLabel className="text-[10px] text-[#687576]">
-                            الحد الأقصى
-                          </FieldLabel>
-                          <Input
-                            type="number"
-                            step="any"
-                            value={field.value ?? ""}
-                            onChange={(event) =>
-                              field.onChange(
-                                event.target.value === ""
-                                  ? undefined
-                                  : Number(event.target.value),
-                              )
-                            }
-                            dir="ltr"
-                            className="border-[#D9E1E0] text-xs"
-                          />
-                        </Field>
-                      )}
-                    />
+                  <Controller
+                    name={`parameters.${index}.referenceRanges.${rangeIndex}.max`}
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <Field
+                        className="col-span-1"
+                        data-invalid={fieldState.invalid}
+                      >
+                        <FieldLabel className="text-[10px] text-[#687576]">
+                          الحد الأقصى
+                        </FieldLabel>
+                        <Input
+                          type="number"
+                          step="any"
+                          value={field.value ?? ""}
+                          onChange={(event) =>
+                            field.onChange(
+                              event.target.value === ""
+                                ? undefined
+                                : Number(event.target.value),
+                            )
+                          }
+                          dir="ltr"
+                          className="border-[#D9E1E0] text-xs"
+                        />
+                      </Field>
+                    )}
+                  />
+
+                  <div className="col-span-1 flex items-end justify-center">
                     <button
                       type="button"
                       onClick={() => remove(rangeIndex)}
-                      className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors shrink-0"
+                      className="w-full h-9 flex items-center justify-center text-red-500 bg-red-50 hover:bg-red-100 rounded-lg transition-colors"
+                      title="حذف المدى"
                     >
-                      <Trash2 className="w-3.5 h-3.5" />
+                      <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
                 </div>

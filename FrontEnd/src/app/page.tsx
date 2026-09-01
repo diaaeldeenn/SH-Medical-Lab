@@ -307,7 +307,7 @@ export default async function Home({
                             </Link>
                             {r.status === "COMPLETED" && (
                               <Link
-                                href={`/requests/${r._id}/results`}
+                                href={`/requests/${r._id}`}
                                 className="text-[10px] font-medium bg-[#263B3D] hover:bg-[#1E3032] text-white rounded-lg px-3 py-1.5 transition-colors whitespace-nowrap text-center"
                               >
                                 النتائج

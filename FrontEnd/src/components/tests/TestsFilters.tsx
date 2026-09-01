@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
+
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -15,6 +16,11 @@ export default function TestsFilters({
   const router = useRouter();
   const [searchInput, setSearchInput] = useState(initialSearch);
   const [category, setCategory] = useState(initialCategory);
+  const categoryRef = useRef(category);
+
+  useEffect(() => {
+    categoryRef.current = category;
+  }, [category]);
 
   const navigate = (nextSearch: string, nextCategory: string) => {
     const params = new URLSearchParams();
@@ -27,7 +33,7 @@ export default function TestsFilters({
   useEffect(() => {
     const timer = setTimeout(() => {
       if (searchInput !== initialSearch) {
-        navigate(searchInput, category);
+        navigate(searchInput, categoryRef.current);
       }
     }, 400);
     return () => clearTimeout(timer);

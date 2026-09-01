@@ -13,7 +13,7 @@ export const getTests = async (
   if (search) params.append("search", search);
   if (category) params.append("category", category);
   const request = await fetch(`${baseUrl}/test?${params}`, {
-    next: { revalidate: 3600 },
+    cache: "no-store",
   });
   const response = request.json();
   return response;
