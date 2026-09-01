@@ -53,16 +53,14 @@ export default function TestsGrid({
   return (
     <div className="space-y-4">
       {isSpecialist && (
-        <div className="flex flex-col items-end gap-2 mb-6">
+        <div className="flex justify-end mb-6">
           <button
-            onClick={() => setSheetTest(null)}
-            className="text-gray-500 hover:text-gray-700 transition-colors"
+            onClick={() => setSheetTest("new")}
+            className="inline-flex items-center gap-2 bg-[#263B3D] hover:bg-[#1E3032] text-white text-xs font-medium px-5 py-2.5 rounded-xl transition-colors"
           >
             <Plus className="w-3.5 h-3.5" />
-          </button>
-          <h2 className="text-base font-bold text-gray-800">
             إضافة تحليل جديد
-          </h2>
+          </button>
         </div>
       )}
 
