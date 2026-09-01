@@ -1,12 +1,9 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Menu, X, FlaskConical } from "lucide-react";
-
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -22,7 +19,6 @@ import MobileMenu from "@/components/navbar/MobileMenu";
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
 
   const { data: session, status } = useSession();
   const pathname = usePathname();
@@ -34,25 +30,10 @@ export default function Navbar() {
     setMobileOpen(false);
   }, [pathname]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 8);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
   return (
     <header
       dir="rtl"
-      className={cn(
-        "sticky top-0 z-50 bg-white border-b border-[#D9E1E0] transition-shadow duration-200",
-        scrolled && "shadow-sm",
-      )}
+      className="sticky top-0 z-50 bg-white border-b border-[#D9E1E0] shadow-sm"
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
         <Link href="/" className="flex items-center gap-2 group shrink-0">

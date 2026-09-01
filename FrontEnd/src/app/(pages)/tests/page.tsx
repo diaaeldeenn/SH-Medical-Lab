@@ -35,6 +35,9 @@ export default async function TestsPage({
 
   const tests: TestI[] = res?.data?.data ?? [];
   const totalPages: number = res?.data?.meta?.totalPages ?? 1;
+  const categories = Array.from(
+    new Set(tests.map((test) => test.category).filter(Boolean)),
+  );
 
   return (
     <div className="min-h-screen bg-[#F4F7F6]" dir="rtl">
@@ -46,7 +49,11 @@ export default async function TestsPage({
       </div>
 
       <div className="max-w-5xl mx-auto px-4 py-6 space-y-4">
-        <TestsFilters initialSearch={search} initialCategory={category} />
+        <TestsFilters
+          initialSearch={search}
+          initialCategory={category}
+          categories={categories}
+        />
         <TestsGrid tests={tests} isSpecialist={!!isSpecialist} />
         {totalPages > 1 && (
           <RequestsPagination

@@ -66,7 +66,6 @@ export default function RequestsPagination({
               }
               onClick={(e) => {
                 if (currentPage <= 1) e.preventDefault();
-                else window.scrollTo({ top: 0, behavior: "smooth" });
               }}
             />
           </PaginationItem>
@@ -87,7 +86,6 @@ export default function RequestsPagination({
                 <PaginationLink
                   href={createPageUrl(page)}
                   isActive={isActive}
-                  onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                   className={`w-8 h-8 flex items-center justify-center rounded-lg text-xs font-medium transition-colors ${
                     isActive
                       ? "bg-[#263B3D] text-white border border-[#263B3D] hover:bg-[#263B3D]/90 hover:text-white"
@@ -112,7 +110,6 @@ export default function RequestsPagination({
               }
               onClick={(e) => {
                 if (currentPage >= totalPages) e.preventDefault();
-                else window.scrollTo({ top: 0, behavior: "smooth" });
               }}
             />
           </PaginationItem>

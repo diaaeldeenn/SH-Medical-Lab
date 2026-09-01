@@ -1,53 +1,64 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { TEST_CATEGORIES } from "@/constants/test.enum";
+
+interface TestsFiltersProps {
+  initialSearch: string;
+  initialCategory: string;
+  categories: string[];
+}
 
 export default function TestsFilters({
   initialSearch,
   initialCategory,
-}: {
-  initialSearch: string;
-  initialCategory: string;
-}) {
+  categories,
+}: TestsFiltersProps) {
   const router = useRouter();
+
   const [searchInput, setSearchInput] = useState(initialSearch);
+  const [search, setSearch] = useState(initialSearch);
   const [category, setCategory] = useState(initialCategory);
-  const categoryRef = useRef(category);
-
-  useEffect(() => {
-    categoryRef.current = category;
-  }, [category]);
-
-  const navigate = (nextSearch: string, nextCategory: string) => {
-    const params = new URLSearchParams();
-    if (nextSearch) params.set("search", nextSearch);
-    if (nextCategory) params.set("category", nextCategory);
-    const queryString = params.toString();
-    router.push(queryString ? `/tests?${queryString}` : "/tests");
-  };
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (searchInput !== initialSearch) {
-        navigate(searchInput, categoryRef.current);
-      }
+      setSearch(searchInput);
     }, 400);
+
     return () => clearTimeout(timer);
   }, [searchInput]);
 
+  useEffect(() => {
+    if (search === initialSearch && category === initialCategory) {
+      return;
+    }
+
+    const params = new URLSearchParams();
+
+    if (search) {
+      params.set("search", search);
+    }
+
+    if (category) {
+      params.set("category", category);
+    }
+
+    params.set("page", "1");
+
+    router.push(`/tests?${params.toString()}`);
+  }, [search, category, initialSearch, initialCategory, router]);
+
   const handleCategoryChange = (value: string) => {
     setCategory(value);
-    navigate(searchInput, value);
   };
 
   return (
     <div className="bg-white border border-[#D9E1E0] rounded-xl p-4 space-y-3">
       <div className="relative">
         <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#687576] pointer-events-none z-10" />
+
         <Input
           type="text"
           value={searchInput}
@@ -59,6 +70,7 @@ export default function TestsFilters({
 
       <div className="flex gap-2 flex-wrap">
         <button
+          type="button"
           onClick={() => handleCategoryChange("")}
           className={`px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${
             category === ""
@@ -68,8 +80,10 @@ export default function TestsFilters({
         >
           الكل
         </button>
-        {TEST_CATEGORIES.map((cat) => (
+
+        {categories.map((cat) => (
           <button
+            type="button"
             key={cat}
             onClick={() => handleCategoryChange(cat)}
             className={`px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${
