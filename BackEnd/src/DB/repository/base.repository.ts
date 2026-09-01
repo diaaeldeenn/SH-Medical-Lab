@@ -14,14 +14,19 @@ abstract class BaseRepository<TRawDocType> {
 
   async create(
     data: Partial<TRawDocType>,
+    options?: QueryOptions<TRawDocType>,
   ): Promise<HydratedDocument<TRawDocType>> {
-    return this.model.create(data);
+    const document = new this.model(data);
+    await document.save(options);
+
+    return document;
   }
 
   async findById(
     id: Types.ObjectId,
+    options?: QueryOptions<TRawDocType>,
   ): Promise<HydratedDocument<TRawDocType> | null> {
-    return this.model.findById(id);
+    return this.model.findById(id, null, options);
   }
 
   async findOne({
@@ -35,6 +40,7 @@ abstract class BaseRepository<TRawDocType> {
   }): Promise<HydratedDocument<TRawDocType> | null> {
     return this.model
       .findOne(filter, projection)
+      .setOptions(options ?? {})
       .sort(options?.sort)
       .skip(options?.skip!)
       .limit(options?.limit!)
@@ -52,6 +58,7 @@ abstract class BaseRepository<TRawDocType> {
   }): Promise<HydratedDocument<TRawDocType>[] | []> {
     return this.model
       .find(filter, projection)
+      .setOptions(options ?? {})
       .sort(options?.sort)
       .skip(options?.skip!)
       .limit(options?.limit!)

@@ -30,3 +30,11 @@ export const parameterStatusClassName: Record<string, string> = {
   HIGH: "bg-red-50 text-red-600 border border-red-100",
   LOW: "bg-blue-50 text-blue-600 border border-blue-100",
 };
+
+
+
+export enum TestStatus {
+  PENDING = "PENDING",
+  IN_PROGRESS = "IN_PROGRESS",
+  COMPLETED = "COMPLETED",
+}

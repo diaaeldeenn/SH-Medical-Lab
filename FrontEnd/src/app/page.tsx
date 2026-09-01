@@ -544,114 +544,62 @@ export default async function Home({
             </div>
           </div>
         </section>
-
-        <section className="bg-white border-t border-[#D9E1E0]">
-          <div className="max-w-6xl mx-auto px-6 sm:px-12 lg:px-24 py-14">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
-              <div>
-                <span className="text-[#5E9C91] font-mono text-xs tracking-widest uppercase">
-                  SH Medical Labs
-                </span>
-                <p className="text-xs text-[#687576] mt-2 max-w-xs leading-relaxed">
-                  معمل تحاليل طبية رقمي متكامل يتيح لك متابعة صحتك بسهولة وثقة.
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-10 text-xs text-[#687576]">
-                <div className="space-y-2">
-                  <p className="font-bold text-[#20292A] text-xs mb-3">
-                    الخدمات
-                  </p>
-                  <Link
-                    href="/requests/new"
-                    className="block hover:text-[#5E9C91] transition-colors"
-                  >
-                    حجز تحليل
-                  </Link>
-                  <Link
-                    href="/requests"
-                    className="block hover:text-[#5E9C91] transition-colors"
-                  >
-                    طلباتي
-                  </Link>
-                  <Link
-                    href="/notifications"
-                    className="block hover:text-[#5E9C91] transition-colors"
-                  >
-                    إشعاراتي
-                  </Link>
-                </div>
-              </div>
-            </div>
-            <Separator className="my-8" />
-            <p className="text-[10px] text-[#687576]">
-              © {new Date().getFullYear()} SH Medical Labs. جميع الحقوق محفوظة.
-            </p>
-          </div>
-        </section>
       </div>
     );
   }
 
   if (role === "SPECIALIST") {
-    const requestsRes = await getAllRequest(1, 5).catch(() => null);
+    const requestsRes = await getAllRequest(1, 10).catch(() => null);
+
     const requests: RequestI[] = requestsRes?.data?.data ?? [];
     const totalDocs: number = requestsRes?.data?.meta?.totalDocs ?? 0;
 
-    const pendingCount = requests.filter((r) => r.status === "PENDING").length;
-    const inProgressCount = requests.filter(
-      (r) =>
-        r.status === "IN_PROGRESS" ||
-        r.status === "SAMPLE_COLLECTED" ||
-        r.status === "ATTENDED",
+    const pendingCount: number = requests.filter(
+      (r) => r.status === "PENDING",
     ).length;
-    const completedCount = requests.filter(
+    const inProgressCount: number = requests.filter((r) =>
+      ["IN_PROGRESS", "SAMPLE_COLLECTED", "ATTENDED"].includes(r.status),
+    ).length;
+    const completedCount: number = requests.filter(
       (r) => r.status === "COMPLETED",
     ).length;
 
     return (
       <div className="min-h-screen bg-[#F4F7F6]" dir="rtl">
-        <section className="relative h-72 sm:h-96 w-full overflow-hidden">
-          <Image
-            src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=1400&q=80"
-            alt="معمل طبي"
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-[#263B3D]/78" />
-          <div className="absolute inset-0 flex flex-col justify-end px-6 pb-10 sm:px-12">
-            <span className="text-[#5E9C91] text-xs font-mono tracking-widest uppercase mb-2">
-              SHLab — لوحة الأخصائي
-            </span>
-            <p className="text-white/45 text-xs mb-2 font-mono">
-              {new Date().toLocaleDateString("ar-EG", {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </p>
-            <h1 className="text-3xl sm:text-4xl font-bold text-white">
-              أهلًا، {user?.name?.split(" ")[0]}
-            </h1>
-            <div className="flex items-center gap-3 mt-6">
-              <Link
-                href="/specialist/requests"
-                className="inline-flex items-center gap-2 bg-[#5E9C91] hover:bg-[#4E887E] text-white text-xs font-medium px-5 py-2.5 rounded-xl transition-colors"
-              >
-                <FileSearch className="w-3.5 h-3.5" />
-                كل الطلبات
-                {totalDocs > 0 && (
-                  <span className="bg-white/20 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
-                    {totalDocs}
-                  </span>
-                )}
-              </Link>
+        <div className="border-b border-[#D9E1E0] bg-white px-6 py-8 sm:px-12">
+          <div className="max-w-3xl mx-auto flex items-end justify-between gap-4">
+            <div>
+              <span className="text-[#5E9C91] text-xs font-mono tracking-widest uppercase">
+                SHLab - لوحة الأخصائي
+              </span>
+              <h1 className="text-2xl sm:text-3xl font-bold text-[#20292A] mt-1">
+                أهلًا، {user?.name?.split(" ")[0]}
+              </h1>
+              <p className="text-xs text-[#687576] mt-1 font-mono">
+                {new Date().toLocaleDateString("ar-EG", {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </p>
             </div>
+            <Link
+              href="/specialist/requests"
+              className="inline-flex items-center gap-2 bg-[#5E9C91] hover:bg-[#4E887E] text-white text-xs font-medium px-5 py-2.5 rounded-lg transition-colors shrink-0"
+            >
+              <FileSearch className="w-3.5 h-3.5" />
+              كل الطلبات
+              {totalDocs > 0 && (
+                <span className="bg-white/20 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                  {totalDocs}
+                </span>
+              )}
+            </Link>
           </div>
-        </section>
+        </div>
 
-        <div className="max-w-3xl mx-auto px-4 py-10 space-y-4">
+        <div className="max-w-3xl mx-auto px-4 py-8 space-y-4">
           <AnimatedSection>
             <AnimatedItem>
               <div className="grid grid-cols-3 gap-3">
@@ -662,6 +610,7 @@ export default async function Home({
                     color: "text-amber-600",
                     bg: "bg-amber-50",
                     border: "border-amber-100",
+                    href: "/specialist/requests?status=PENDING",
                   },
                   {
                     label: "جارٍ التحليل",
@@ -669,6 +618,7 @@ export default async function Home({
                     color: "text-blue-600",
                     bg: "bg-blue-50",
                     border: "border-blue-100",
+                    href: "/specialist/requests?status=IN_PROGRESS",
                   },
                   {
                     label: "مكتمل",
@@ -676,23 +626,25 @@ export default async function Home({
                     color: "text-emerald-600",
                     bg: "bg-emerald-50",
                     border: "border-emerald-100",
+                    href: "/specialist/requests?status=COMPLETED",
                   },
                 ].map((s) => (
-                  <div
+                  <Link
                     key={s.label}
-                    className={`${s.bg} border ${s.border} rounded-xl px-4 py-5 text-center`}
+                    href={s.href}
+                    className={`${s.bg} border ${s.border} rounded-lg px-4 py-5 text-center hover:opacity-80 transition-opacity`}
                   >
                     <p className={`text-2xl font-bold ${s.color} tabular-nums`}>
                       {s.value}
                     </p>
                     <p className="text-xs text-[#687576] mt-1">{s.label}</p>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </AnimatedItem>
 
             <AnimatedItem>
-              <div className="bg-white border border-[#D9E1E0] rounded-xl overflow-hidden">
+              <div className="bg-white border border-[#D9E1E0] rounded-lg overflow-hidden">
                 <div className="px-5 py-4 flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#5E9C91]" />
@@ -778,9 +730,9 @@ export default async function Home({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <Link
                   href="/specialist/requests"
-                  className="bg-white border border-[#D9E1E0] hover:border-[#5E9C91] rounded-xl px-5 py-5 flex items-center gap-4 transition-colors group"
+                  className="bg-white border border-[#D9E1E0] hover:border-[#5E9C91] rounded-lg px-5 py-5 flex items-center gap-4 transition-colors group"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-[#F4F7F6] group-hover:bg-[#5E9C91]/10 flex items-center justify-center transition-colors shrink-0">
+                  <div className="w-10 h-10 rounded-lg bg-[#F4F7F6] group-hover:bg-[#5E9C91]/10 flex items-center justify-center transition-colors shrink-0">
                     <FileSearch className="w-4 h-4 text-[#5E9C91]" />
                   </div>
                   <div>
@@ -795,9 +747,9 @@ export default async function Home({
                 </Link>
                 <Link
                   href="/specialist/requests?status=PENDING"
-                  className="bg-white border border-[#D9E1E0] hover:border-[#5E9C91] rounded-xl px-5 py-5 flex items-center gap-4 transition-colors group"
+                  className="bg-white border border-[#D9E1E0] hover:border-[#5E9C91] rounded-lg px-5 py-5 flex items-center gap-4 transition-colors group"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-[#F4F7F6] group-hover:bg-[#5E9C91]/10 flex items-center justify-center transition-colors shrink-0">
+                  <div className="w-10 h-10 rounded-lg bg-[#F4F7F6] group-hover:bg-[#5E9C91]/10 flex items-center justify-center transition-colors shrink-0">
                     <ClipboardList className="w-4 h-4 text-[#5E9C91]" />
                   </div>
                   <div>
@@ -818,7 +770,6 @@ export default async function Home({
     );
   }
 
-  // ─── GUEST ───
   const testsRes = await getTests(1, 20).catch(() => null);
   const tests: TestI[] = testsRes?.data?.data ?? [];
   const marqueeItems =
@@ -1072,63 +1023,6 @@ export default async function Home({
               </Link>
             </div>
           </div>
-        </div>
-      </section>
-
-      <section className="bg-white border-t border-[#D9E1E0]">
-        <div className="max-w-6xl mx-auto px-6 sm:px-12 lg:px-24 py-14">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
-            <div>
-              <span className="text-[#5E9C91] font-mono text-xs tracking-widest uppercase">
-                SH Medical Labs
-              </span>
-              <p className="text-xs text-[#687576] mt-2 max-w-xs leading-relaxed">
-                معمل تحاليل طبية رقمي متكامل يتيح لك متابعة صحتك بسهولة وثقة.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-10 text-xs text-[#687576]">
-              <div className="space-y-2">
-                <p className="font-bold text-[#20292A] text-xs mb-3">الخدمات</p>
-                <Link
-                  href="/auth/register"
-                  className="block hover:text-[#5E9C91] transition-colors"
-                >
-                  حجز تحليل
-                </Link>
-                <Link
-                  href="/auth/login"
-                  className="block hover:text-[#5E9C91] transition-colors"
-                >
-                  نتائجي
-                </Link>
-                <Link
-                  href="/auth/login"
-                  className="block hover:text-[#5E9C91] transition-colors"
-                >
-                  إشعاراتي
-                </Link>
-              </div>
-              <div className="space-y-2">
-                <p className="font-bold text-[#20292A] text-xs mb-3">الحساب</p>
-                <Link
-                  href="/auth/register"
-                  className="block hover:text-[#5E9C91] transition-colors"
-                >
-                  تسجيل جديد
-                </Link>
-                <Link
-                  href="/auth/login"
-                  className="block hover:text-[#5E9C91] transition-colors"
-                >
-                  تسجيل الدخول
-                </Link>
-              </div>
-            </div>
-          </div>
-          <Separator className="my-8" />
-          <p className="text-[10px] text-[#687576]">
-            © {new Date().getFullYear()} SH Medical Labs. جميع الحقوق محفوظة.
-          </p>
         </div>
       </section>
     </div>

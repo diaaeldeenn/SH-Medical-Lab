@@ -1,6 +1,6 @@
 "use server";
 import authToken from "@/lib/nextAuth/authToken";
-
+import { UpdateTestStatusType } from "@/validation/test.validation";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -90,7 +90,6 @@ export const getMyRequest = async (page: number, limit: number) => {
     headers: {
       "Content-Type": "application/json",
       token,
-      cache: "no-store",
     },
   });
 
@@ -123,12 +122,11 @@ export const getAllRequest = async (
   if (startDate) params.append("startDate", startDate);
   if (endDate) params.append("endDate", endDate);
 
-  const request = await fetch(`${baseUrl}/request/request?${params}`, {
+  const request = await fetch(`${baseUrl}/request?${params}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
       token,
-      cache: "no-store",
     },
   });
 
@@ -149,7 +147,107 @@ export const getRequestById = async (requestId: string) => {
     headers: {
       "Content-Type": "application/json",
       token,
-      cache: "no-store",
+    },
+  });
+
+  const response = await request.json();
+
+  if (!request.ok) {
+    throw new Error(response.message || "Request failed");
+  }
+
+  return response;
+};
+
+export const attendRequest = async (requestId: string) => {
+  const token = await authToken();
+
+  const request = await fetch(`${baseUrl}/request/${requestId}/attend`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      token,
+    },
+  });
+
+  const response = await request.json();
+
+  if (!request.ok) {
+    throw new Error(response.message || "Request failed");
+  }
+
+  return response;
+};
+
+export const collectSampleRequest = async (requestId: string) => {
+  const token = await authToken();
+
+  const request = await fetch(`${baseUrl}/request/${requestId}/sample`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      token,
+    },
+  });
+
+  const response = await request.json();
+
+  if (!request.ok) {
+    throw new Error(response.message || "Request failed");
+  }
+
+  return response;
+};
+
+export const startProcessingRequest = async (requestId: string) => {
+  const token = await authToken();
+
+  const request = await fetch(`${baseUrl}/request/${requestId}/start`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      token,
+    },
+  });
+
+  const response = await request.json();
+
+  if (!request.ok) {
+    throw new Error(response.message || "Request failed");
+  }
+
+  return response;
+};
+
+export const updateTestStatus = async (requestId: string,testId:string,status:UpdateTestStatusType) => {
+  const token = await authToken();
+
+  const request = await fetch(`${baseUrl}/request/${requestId}/tests/${testId}/status`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      token,
+    },
+    body:JSON.stringify(status)
+  });
+
+  const response = await request.json();
+
+  if (!request.ok) {
+    throw new Error(response.message || "Request failed");
+  }
+
+  return response;
+};
+
+export const completeRequest = async (requestId: string) => {
+  const token = await authToken();
+
+  const request = await fetch(`${baseUrl}/request/${requestId}/complete`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      token,
     },
   });
 

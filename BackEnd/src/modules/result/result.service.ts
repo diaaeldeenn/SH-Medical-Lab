@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import { Types } from "mongoose";
+import mongoose, { Types } from "mongoose";
 import ResultRepository from "../../DB/repository/result.repository.js";
 import LabRequestRepository from "../../DB/repository/labRequest.Repository.js";
 import TestRepository from "../../DB/repository/test.repository.js";
@@ -84,7 +84,11 @@ class ResultService {
   }
 
   createResult = async (req: Request, res: Response, next: NextFunction) => {
+    const session = await mongoose.startSession();
+
     try {
+      session.startTransaction();
+
       const requestId = req.params.requestId as string;
       const testId = req.params.testId as string;
       const data: CreateResultI = req.body;
@@ -97,6 +101,9 @@ class ResultService {
         filter: {
           _id: new Types.ObjectId(requestId),
           status: RequestStatus.IN_PROGRESS,
+        },
+        options: {
+          session,
         },
       });
 
@@ -112,17 +119,13 @@ class ResultService {
         throw new AppError("Test Does Not Belong To This Request", 404);
       }
 
-      if (requestTest.status !== TestStatus.COMPLETED) {
-        throw new AppError(
-          "Test Must Be Completed Before Creating Result",
-          400,
-        );
-      }
-
       const test = await this.testRepo.findOne({
         filter: {
           _id: new Types.ObjectId(testId),
           isDeleted: { $ne: true },
+        },
+        options: {
+          session,
         },
       });
 
@@ -134,6 +137,9 @@ class ResultService {
         filter: {
           request: request._id,
           test: test._id,
+        },
+        options: {
+          session,
         },
       });
 
@@ -182,15 +188,23 @@ class ResultService {
         };
       });
 
-      const result = await this.resultRepo.create({
-        request: request._id,
-        test: test._id,
-        testName: test.nameAr,
-        parameters: resultParameters,
-        note: data.note,
-        createdBy,
-        isLocked: false,
-      });
+      const result = await this.resultRepo.create(
+        {
+          request: request._id,
+          test: test._id,
+          testName: test.nameAr,
+          parameters: resultParameters,
+          note: data.note,
+          createdBy,
+          isLocked: false,
+        },
+        {
+          session,
+        },
+      );
+
+
+      requestTest.status = TestStatus.COMPLETED;
 
       const allTestsCompleted = request.tests.every(
         (item) => item.status === TestStatus.COMPLETED,
@@ -200,7 +214,9 @@ class ResultService {
         ? RequestStatus.COMPLETED
         : RequestStatus.IN_PROGRESS;
 
-      await request.save();
+      await request.save({ session });
+
+      await session.commitTransaction();
 
       const patientId = request.patient;
 
@@ -212,6 +228,7 @@ class ResultService {
       });
 
       const totalTestsInRequest = request.tests.length;
+
       const totalResultsCreated = await this.resultRepo.countDocuments({
         request: request._id,
         isDeleted: { $ne: true },
@@ -233,7 +250,10 @@ class ResultService {
         data: result,
       });
     } catch (error) {
+      await session.abortTransaction();
       return next(error);
+    } finally {
+      await session.endSession();
     }
   };
 
@@ -585,7 +605,6 @@ class ResultService {
         result.test.toString(),
       );
 
-      
       res.setHeader("Content-Type", "application/pdf");
       res.setHeader(
         "Content-Disposition",
