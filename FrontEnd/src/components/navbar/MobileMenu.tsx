@@ -10,6 +10,8 @@ import {
   ClipboardList,
   Bell,
   Microscope,
+  Home,
+  CalendarCheck,
 } from "lucide-react";
 
 interface MobileMenuProps {
@@ -29,9 +31,20 @@ export default function MobileMenu({ onNavigate }: MobileMenuProps) {
   };
 
   return (
-    <nav className="px-4 py-4 flex flex-col gap-1">
+    <nav className="px-4 flex flex-col gap-1">
       {!isAuthenticated && (
         <>
+          <Link
+            href="/"
+            onClick={onNavigate}
+            className="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-[#F4F7F6] transition-colors"
+          >
+            <Home size={16} className="text-[#5E9C91]" strokeWidth={1.8} />
+            <span className="text-sm font-medium text-[#20292A]">
+              الرئيسية
+            </span>
+          </Link>
+
           <Link
             href="/tests"
             onClick={onNavigate}
@@ -39,7 +52,18 @@ export default function MobileMenu({ onNavigate }: MobileMenuProps) {
           >
             <TestTube2 size={16} className="text-[#5E9C91]" strokeWidth={1.8} />
             <span className="text-sm font-medium text-[#20292A]">
-              التحاليل المتاحة
+              التحاليل
+            </span>
+          </Link>
+
+          <Link
+            href="/auth/register"
+            onClick={onNavigate}
+            className="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-[#F4F7F6] transition-colors"
+          >
+            <CalendarCheck size={16} className="text-[#5E9C91]" strokeWidth={1.8} />
+            <span className="text-sm font-medium text-[#20292A]">
+              احجز موعد
             </span>
           </Link>
 
@@ -58,6 +82,15 @@ export default function MobileMenu({ onNavigate }: MobileMenuProps) {
 
       {role === "PATIENT" && (
         <>
+          <Link
+            href="/"
+            onClick={onNavigate}
+            className="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-[#F4F7F6] transition-colors"
+          >
+            <Home size={16} className="text-[#5E9C91]" strokeWidth={1.8} />
+            <span className="text-sm font-medium text-[#20292A]">الرئيسية</span>
+          </Link>
+
           <Link
             href="/tests"
             onClick={onNavigate}
@@ -81,6 +114,28 @@ export default function MobileMenu({ onNavigate }: MobileMenuProps) {
           </Link>
 
           <Link
+            href="/requests/new"
+            onClick={onNavigate}
+            className="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-[#F4F7F6] transition-colors"
+          >
+            <CalendarCheck
+              size={16}
+              className="text-[#5E9C91]"
+              strokeWidth={1.8}
+            />
+            <span className="text-sm font-medium text-[#20292A]">احجز موعد</span>
+          </Link>
+
+          <Link
+            href="/about"
+            onClick={onNavigate}
+            className="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-[#F4F7F6] transition-colors"
+          >
+            <Info size={16} className="text-[#5E9C91]" strokeWidth={1.8} />
+            <span className="text-sm font-medium text-[#20292A]">عن المعمل</span>
+          </Link>
+
+          <Link
             href="/notifications"
             onClick={onNavigate}
             className="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-[#F4F7F6] transition-colors"
@@ -95,6 +150,15 @@ export default function MobileMenu({ onNavigate }: MobileMenuProps) {
 
       {role === "SPECIALIST" && (
         <>
+          <Link
+            href="/"
+            onClick={onNavigate}
+            className="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-[#F4F7F6] transition-colors"
+          >
+            <Home size={16} className="text-[#5E9C91]" strokeWidth={1.8} />
+            <span className="text-sm font-medium text-[#20292A]">الرئيسية</span>
+          </Link>
+
           <Link
             href="/tests"
             onClick={onNavigate}
@@ -117,6 +181,15 @@ export default function MobileMenu({ onNavigate }: MobileMenuProps) {
             <span className="text-sm font-medium text-[#20292A]">
               إدارة الطلبات
             </span>
+          </Link>
+
+          <Link
+            href="/about"
+            onClick={onNavigate}
+            className="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-[#F4F7F6] transition-colors"
+          >
+            <Info size={16} className="text-[#5E9C91]" strokeWidth={1.8} />
+            <span className="text-sm font-medium text-[#20292A]">عن المعمل</span>
           </Link>
         </>
       )}

@@ -1,4 +1,5 @@
 "use server";
+
 import authToken from "@/lib/nextAuth/authToken";
 import { CreateTestType, UpdateTestType } from "@/validation/test.validation";
 
@@ -19,13 +20,22 @@ export const createTest = async (payload: CreateTestType) => {
   const response = await request.json();
 
   if (!request.ok) {
-    throw new Error(response.message || "Request failed");
+    return {
+      success: false,
+      message: response.message || "فشل إضافة التحليل",
+    };
   }
 
-  return response;
+  return {
+    success: true,
+    data: response,
+  };
 };
 
-export const updateTest = async (payload: UpdateTestType, testId: string) => {
+export const updateTest = async (
+  payload: UpdateTestType,
+  testId: string,
+) => {
   const token = await authToken();
 
   const request = await fetch(`${baseUrl}/test/${testId}`, {
@@ -40,10 +50,16 @@ export const updateTest = async (payload: UpdateTestType, testId: string) => {
   const response = await request.json();
 
   if (!request.ok) {
-    throw new Error(response.message || "Request failed");
+    return {
+      success: false,
+      message: response.message || "فشل تحديث التحليل",
+    };
   }
 
-  return response;
+  return {
+    success: true,
+    data: response,
+  };
 };
 
 export const deleteTest = async (testId: string) => {
@@ -60,10 +76,16 @@ export const deleteTest = async (testId: string) => {
   const response = await request.json();
 
   if (!request.ok) {
-    throw new Error(response.message || "Request failed");
+    return {
+      success: false,
+      message: response.message || "فشل حذف التحليل",
+    };
   }
 
-  return response;
+  return {
+    success: true,
+    data: response,
+  };
 };
 
 export const getTestById = async (testId: string) => {
@@ -80,8 +102,14 @@ export const getTestById = async (testId: string) => {
   const response = await request.json();
 
   if (!request.ok) {
-    throw new Error(response.message || "Request failed");
+    return {
+      success: false,
+      message: response.message || "فشل تحميل التحليل",
+    };
   }
 
-  return response;
+  return {
+    success: true,
+    data: response,
+  };
 };

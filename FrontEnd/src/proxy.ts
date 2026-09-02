@@ -16,7 +16,7 @@ export default async function proxy(request: NextRequest) {
     "/requests",
     "/requests/new",
     "/specialist/requests",
-    "/tests",
+    "/notifications",
   ];
 
   const isAuthPage = authPages.includes(pathname);
@@ -46,6 +46,6 @@ export const config = {
     "/requests/:id",
     "/specialist/requests",
     "/specialist/requests/:id",
-    "/tests",
+    "/notifications",
   ],
 };

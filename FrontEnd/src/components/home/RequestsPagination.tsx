@@ -1,6 +1,6 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   Pagination,
   PaginationContent,
@@ -20,18 +20,28 @@ export default function RequestsPagination({
   currentPage,
   totalPages,
 }: RequestsPaginationProps) {
+  const router = useRouter();
   const searchParams = useSearchParams();
 
   const createPageUrl = (pageNumber: number) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", pageNumber.toString());
+
     return `?${params.toString()}`;
+  };
+
+  const handlePageChange = (pageNumber: number) => {
+    if (pageNumber < 1 || pageNumber > totalPages) return;
+
+    router.push(createPageUrl(pageNumber), {
+      scroll: false,
+    });
   };
 
   if (totalPages <= 1) return null;
 
   const generatePaginationLinks = () => {
-    const pages = [];
+    const pages: (number | string)[] = [];
     const maxVisiblePages = 5;
 
     if (totalPages <= maxVisiblePages) {
@@ -42,11 +52,27 @@ export default function RequestsPagination({
       if (currentPage <= 3) {
         pages.push(1, 2, 3, 4, "ellipsis-end", totalPages);
       } else if (currentPage >= totalPages - 2) {
-        pages.push(1, "ellipsis-start", totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+        pages.push(
+          1,
+          "ellipsis-start",
+          totalPages - 3,
+          totalPages - 2,
+          totalPages - 1,
+          totalPages,
+        );
       } else {
-        pages.push(1, "ellipsis-start", currentPage - 1, currentPage, currentPage + 1, "ellipsis-end", totalPages);
+        pages.push(
+          1,
+          "ellipsis-start",
+          currentPage - 1,
+          currentPage,
+          currentPage + 1,
+          "ellipsis-end",
+          totalPages,
+        );
       }
     }
+
     return pages;
   };
 
@@ -65,7 +91,11 @@ export default function RequestsPagination({
                   : "border border-[#D9E1E0] text-[#687576] hover:border-[#5E9C91] hover:text-[#5E9C91] transition-colors rounded-lg"
               }
               onClick={(e) => {
-                if (currentPage <= 1) e.preventDefault();
+                e.preventDefault();
+
+                if (currentPage > 1) {
+                  handlePageChange(currentPage - 1);
+                }
               }}
             />
           </PaginationItem>
@@ -86,6 +116,13 @@ export default function RequestsPagination({
                 <PaginationLink
                   href={createPageUrl(page)}
                   isActive={isActive}
+                  onClick={(e) => {
+                    e.preventDefault();
+
+                    if (!isActive) {
+                      handlePageChange(page);
+                    }
+                  }}
                   className={`w-8 h-8 flex items-center justify-center rounded-lg text-xs font-medium transition-colors ${
                     isActive
                       ? "bg-[#263B3D] text-white border border-[#263B3D] hover:bg-[#263B3D]/90 hover:text-white"
@@ -109,7 +146,11 @@ export default function RequestsPagination({
                   : "border border-[#D9E1E0] text-[#687576] hover:border-[#5E9C91] hover:text-[#5E9C91] transition-colors rounded-lg"
               }
               onClick={(e) => {
-                if (currentPage >= totalPages) e.preventDefault();
+                e.preventDefault();
+
+                if (currentPage < totalPages) {
+                  handlePageChange(currentPage + 1);
+                }
               }}
             />
           </PaginationItem>

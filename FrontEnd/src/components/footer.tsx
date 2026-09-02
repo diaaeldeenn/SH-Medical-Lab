@@ -1,7 +1,10 @@
 import { authOptions } from "@/lib/nextAuth/auth";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
+import Image from "next/image";
 import { Separator } from "./ui/separator";
+import { FaFacebookF, FaLinkedinIn, FaWhatsapp } from "react-icons/fa";
+import { HiOutlineMail } from "react-icons/hi";
 
 const currentYear = new Date().getFullYear();
 
@@ -14,15 +17,24 @@ export default async function Footer() {
 
   const serviceLinks = isPatient
     ? [
+        { href: "/", label: "الرئيسية" },
+        { href: "/tests", label: "التحاليل" },
         { href: "/requests/new", label: "حجز تحليل" },
         { href: "/requests", label: "طلباتي" },
-        { href: "/notifications", label: "إشعاراتي" },
+        { href: "/about", label: "عن المعمل" },
       ]
     : isSpecialist
-      ? [{ href: "/specialist/requests", label: "طلبات التحاليل" }]
+      ? [
+          { href: "/", label: "الرئيسية" },
+          { href: "/tests", label: "التحاليل" },
+          { href: "/specialist/requests", label: "إدارة الطلبات" },
+          { href: "/about", label: "عن المعمل" },
+        ]
       : [
-          { href: "/auth/register", label: "حجز تحليل" },
-          { href: "/auth/login", label: "إشعاراتي" },
+          { href: "/", label: "الرئيسية" },
+          { href: "/tests", label: "التحاليل" },
+          { href: "/auth/register", label: "حجز موعد" },
+          { href: "/about", label: "عن المعمل" },
         ];
 
   const accountLinks = isPatient
@@ -33,39 +45,91 @@ export default async function Footer() {
     : isSpecialist
       ? [{ href: "/profile", label: "الملف الشخصي" }]
       : [
-          { href: "/auth/register", label: "تسجيل جديد" },
           { href: "/auth/login", label: "تسجيل الدخول" },
+          { href: "/auth/register", label: "إنشاء حساب" },
         ];
 
+  const socialLinks = [
+    {
+      href: "https://www.facebook.com/diaaeldeenn",
+      label: "Facebook",
+      icon: FaFacebookF,
+    },
+    {
+      href: "https://www.linkedin.com/in/diaaelseady",
+      label: "LinkedIn",
+      icon: FaLinkedinIn,
+    },
+    {
+      href: "https://wa.me/201278396490",
+      label: "WhatsApp",
+      icon: FaWhatsapp,
+    },
+    {
+      href: "mailto:diaaelseady@gmail.com",
+      label: "Email",
+      icon: HiOutlineMail,
+    },
+  ];
+
   return (
-    <footer dir="rtl" className="bg-white border-t border-[#D9E1E0]">
-      <div className="max-w-6xl mx-auto px-6 sm:px-12 lg:px-24 py-12 sm:py-14">
-        <div className="flex flex-col lg:flex-row items-start justify-between gap-10">
-          <div className="max-w-sm">
-            <span className="text-[#5E9C91] font-mono text-xs tracking-widest uppercase">
+    <footer
+      dir="rtl"
+      className="bg-[#F8FAFA] border-t border-[#D9E1E0] text-[#20292A]"
+    >
+      <div className="max-w-6xl mx-auto px-6 sm:px-12 lg:px-24 py-14 sm:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 items-start">
+          <div className="lg:col-span-5">
+            <div className="mb-2">
+              <Image
+                src="/logo.png"
+                alt="SH Medical Labs Logo"
+                width={64}
+                height={64}
+                className="w-16 h-16 object-cover rounded-full"
+              />
+            </div>
+
+            <span className="inline-block px-3 py-1 my-3 rounded-md bg-[#5E9C91]/10 text-[#5E9C91] font-mono text-xs tracking-wider uppercase font-semibold">
               SH Medical Labs
             </span>
 
-            <h2 className="mt-3 text-base font-bold text-[#20292A]">
-              تحاليلك الطبية بسهولة وثقة
+            <h2 className="text-lg font-bold text-[#20292A] leading-snug">
+              تحاليلك الطبية الرقمية بسهولة وثقة تامة
             </h2>
 
-            <p className="text-xs text-[#687576] mt-2 max-w-xs leading-6">
-              معمل تحاليل طبية رقمي يتيح لك إدارة طلبات التحاليل ومتابعة نتائجك
-              بسهولة وأمان.
+            <p className="text-xs text-[#687576] max-w-sm leading-6">
+              معمل تحاليل طبية ذكي يتيح لك إدارة طلباتك، حجز مواعيدك، ومتابعة
+              نتائجك الصحية بكل أمان ويسر.
             </p>
+
+            <div className="flex items-center gap-2.5 pt-2">
+              {socialLinks.map(({ href, label, icon: Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="w-9 h-9 rounded-lg bg-white border border-[#D9E1E0] flex items-center justify-center text-[#687576] hover:bg-[#5E9C91] hover:text-white hover:border-[#5E9C91] transition-all shadow-sm"
+                >
+                  <Icon size={16} />
+                </a>
+              ))}
+            </div>
           </div>
 
-          <div className="flex flex-wrap gap-x-16 gap-y-8 text-xs text-[#687576]">
-            <div className="min-w-28">
-              <p className="font-bold text-[#20292A] text-xs mb-4">الخدمات</p>
-
-              <div className="space-y-3">
+          <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-2 gap-8">
+            <div>
+              <p className="font-bold text-[#20292A] text-xs uppercase tracking-wider mb-4">
+                الروابط السريعة
+              </p>
+              <div className="space-y-2.5">
                 {serviceLinks.map((link) => (
                   <Link
                     key={`${link.href}-${link.label}`}
                     href={link.href}
-                    className="block hover:text-[#5E9C91] transition-colors"
+                    className="block text-xs text-[#687576] hover:text-[#5E9C91] transition-colors font-medium"
                   >
                     {link.label}
                   </Link>
@@ -73,15 +137,16 @@ export default async function Footer() {
               </div>
             </div>
 
-            <div className="min-w-28">
-              <p className="font-bold text-[#20292A] text-xs mb-4">الحساب</p>
-
-              <div className="space-y-3">
+            <div>
+              <p className="font-bold text-[#20292A] text-xs uppercase tracking-wider mb-4">
+                حسابي
+              </p>
+              <div className="space-y-2.5">
                 {accountLinks.map((link) => (
                   <Link
                     key={`${link.href}-${link.label}`}
                     href={link.href}
-                    className="block hover:text-[#5E9C91] transition-colors"
+                    className="block text-xs text-[#687576] hover:text-[#5E9C91] transition-colors font-medium"
                   >
                     {link.label}
                   </Link>
@@ -91,15 +156,17 @@ export default async function Footer() {
           </div>
         </div>
 
-        <Separator className="my-8" />
+        <Separator className="my-8 bg-[#D9E1E0]" />
 
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-          <p className="text-[10px] text-[#687576]">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-right">
+          <p className="text-[11px] text-[#687576]">
             © {currentYear} SH Medical Labs. جميع الحقوق محفوظة.
           </p>
 
-          <p className="text-[10px] text-[#8A9696]">
-            رعاية صحية رقمية أبسط وأوضح
+          <p className="text-[11px] text-[#687576] flex items-center justify-center gap-1.5 flex-wrap">
+            <span className="font-semibold text-[#263B3D] bg-white px-2.5 py-1 rounded-md border border-[#D9E1E0] shadow-2xs tracking-wide">
+              Where SH beats to heal the heart
+            </span>
           </p>
         </div>
       </div>

@@ -31,6 +31,7 @@ import StatsCounter from "@/components/home/StatsCounter";
 import TestsMarquee from "@/components/home/TestsMarquee";
 import { getTests } from "@/service/test.api";
 import RequestsPagination from "@/components/home/RequestsPagination";
+import RequestsTransition from "@/components/ui/RequestsTransition";
 
 const services = [
   {
@@ -249,98 +250,111 @@ export default async function Home({
                   </Link>
                 </div>
 
-                {requests.length > 0 ? (
-                  <div className="bg-white border border-[#D9E1E0] rounded-xl overflow-hidden">
-                    {requests.map((r, index) => (
-                      <div key={r._id}>
-                        <div className="px-4 sm:px-5 py-4 flex items-start gap-4">
-                          <div className="flex-1 min-w-0 space-y-2">
-                            <div className="flex items-center justify-between gap-3 flex-wrap">
-                              <p className="text-[10px] font-mono text-[#687576]">
-                                {r.requestNumber}
-                              </p>
-                              <Badge
-                                variant={statusVariant[r.status] ?? "outline"}
-                              >
-                                {statusLabel[r.status] ?? r.status}
-                              </Badge>
-                            </div>
-                            <div className="flex flex-wrap gap-1.5">
-                              {r.tests.map((t) => (
-                                <span
-                                  key={t.testId}
-                                  className="text-[10px] bg-[#F4F7F6] text-[#687576] px-2 py-0.5 rounded-md"
+                <RequestsTransition>
+                  {requests.length > 0 ? (
+                    <div className="bg-white border border-[#D9E1E0] rounded-xl overflow-hidden">
+                      {requests.map((r, index) => (
+                        <div key={r._id}>
+                          <div className="px-4 sm:px-5 py-4 flex items-start gap-4">
+                            <div className="flex-1 min-w-0 space-y-2">
+                              <div className="flex items-center justify-between gap-3 flex-wrap">
+                                <p className="text-[10px] font-mono text-[#687576]">
+                                  {r.requestNumber}
+                                </p>
+
+                                <Badge
+                                  variant={statusVariant[r.status] ?? "outline"}
                                 >
-                                  {t.testName}
-                                </span>
-                              ))}
-                            </div>
-                            {r.appointment?.appointmentDate && (
-                              <div className="flex items-center gap-1.5 text-[10px] text-[#687576]">
-                                <Clock className="w-3 h-3 text-[#5E9C91] shrink-0" />
-                                <span>
-                                  {new Date(
-                                    r.appointment.appointmentDate,
-                                  ).toLocaleDateString("ar-EG", {
-                                    year: "numeric",
-                                    month: "long",
-                                    day: "numeric",
-                                  })}
-                                </span>
-                                {r.appointment.appointmentTime && (
-                                  <span
-                                    dir="ltr"
-                                    className="font-medium text-[#20292A]"
-                                  >
-                                    {r.appointment.appointmentTime}
-                                  </span>
-                                )}
+                                  {statusLabel[r.status] ?? r.status}
+                                </Badge>
                               </div>
-                            )}
-                          </div>
-                          <div className="flex flex-col gap-2 shrink-0">
-                            <Link
-                              href={`/requests/${r._id}`}
-                              className="text-[10px] font-medium text-[#5E9C91] hover:text-[#4E887E] border border-[#D9E1E0] hover:border-[#5E9C91] rounded-lg px-3 py-1.5 transition-colors whitespace-nowrap text-center"
-                            >
-                              التفاصيل
-                            </Link>
-                            {r.status === "COMPLETED" && (
+
+                              <div className="flex flex-wrap gap-1.5">
+                                {r.tests.map((t) => (
+                                  <span
+                                    key={t.testId}
+                                    className="text-[10px] bg-[#F4F7F6] text-[#687576] px-2 py-0.5 rounded-md"
+                                  >
+                                    {t.testName}
+                                  </span>
+                                ))}
+                              </div>
+
+                              {r.appointment?.appointmentDate && (
+                                <div className="flex items-center gap-1.5 text-[10px] text-[#687576]">
+                                  <Clock className="w-3 h-3 text-[#5E9C91] shrink-0" />
+
+                                  <span>
+                                    {new Date(
+                                      r.appointment.appointmentDate,
+                                    ).toLocaleDateString("ar-EG", {
+                                      year: "numeric",
+                                      month: "long",
+                                      day: "numeric",
+                                    })}
+                                  </span>
+
+                                  {r.appointment.appointmentTime && (
+                                    <span
+                                      dir="ltr"
+                                      className="font-medium text-[#20292A]"
+                                    >
+                                      {r.appointment.appointmentTime}
+                                    </span>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+
+                            <div className="flex flex-col gap-2 shrink-0">
                               <Link
                                 href={`/requests/${r._id}`}
-                                className="text-[10px] font-medium bg-[#263B3D] hover:bg-[#1E3032] text-white rounded-lg px-3 py-1.5 transition-colors whitespace-nowrap text-center"
+                                className="text-[10px] font-medium text-[#5E9C91] hover:text-[#4E887E] border border-[#D9E1E0] hover:border-[#5E9C91] rounded-lg px-3 py-1.5 transition-colors whitespace-nowrap text-center"
                               >
-                                النتائج
+                                التفاصيل
                               </Link>
-                            )}
+
+                              {r.status === "COMPLETED" && (
+                                <Link
+                                  href={`/requests/${r._id}`}
+                                  className="text-[10px] font-medium bg-[#263B3D] hover:bg-[#1E3032] text-white rounded-lg px-3 py-1.5 transition-colors whitespace-nowrap text-center"
+                                >
+                                  النتائج
+                                </Link>
+                              )}
+                            </div>
                           </div>
+
+                          {index < requests.length - 1 && <Separator />}
                         </div>
-                        {index < requests.length - 1 && <Separator />}
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="bg-white border border-[#D9E1E0] border-dashed rounded-xl px-6 py-14 text-center space-y-4">
+                      <div className="w-12 h-12 rounded-xl bg-[#F4F7F6] flex items-center justify-center mx-auto">
+                        <FlaskConical className="w-5 h-5 text-[#5E9C91]" />
                       </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="bg-white border border-[#D9E1E0] border-dashed rounded-xl px-6 py-14 text-center space-y-4">
-                    <div className="w-12 h-12 rounded-xl bg-[#F4F7F6] flex items-center justify-center mx-auto">
-                      <FlaskConical className="w-5 h-5 text-[#5E9C91]" />
+
+                      <div>
+                        <p className="text-sm font-bold text-[#20292A]">
+                          لا يوجد طلبات بعد
+                        </p>
+
+                        <p className="text-xs text-[#687576] mt-1">
+                          ابدأ بحجز أول تحليل لك الآن
+                        </p>
+                      </div>
+
+                      <Link
+                        href="/requests/new"
+                        className="inline-flex items-center gap-2 bg-[#263B3D] hover:bg-[#1E3032] text-white text-xs font-medium px-6 py-2.5 rounded-xl transition-colors"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                        ابدأ بطلبك الأول
+                      </Link>
                     </div>
-                    <div>
-                      <p className="text-sm font-bold text-[#20292A]">
-                        لا يوجد طلبات بعد
-                      </p>
-                      <p className="text-xs text-[#687576] mt-1">
-                        ابدأ بحجز أول تحليل لك الآن
-                      </p>
-                    </div>
-                    <Link
-                      href="/requests/new"
-                      className="inline-flex items-center gap-2 bg-[#263B3D] hover:bg-[#1E3032] text-white text-xs font-medium px-6 py-2.5 rounded-xl transition-colors"
-                    >
-                      <Plus className="w-3.5 h-3.5" />
-                      ابدأ بطلبك الأول
-                    </Link>
-                  </div>
-                )}
+                  )}
+                </RequestsTransition>
 
                 {totalPages > 1 && (
                   <RequestsPagination

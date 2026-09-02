@@ -99,7 +99,7 @@ export default function TestsGrid({
           dir="rtl"
         >
           <SheetHeader>
-            <SheetTitle className="text-[#20292A]">
+            <SheetTitle className="text-[#20292A] mt-5">
               {sheetTest === "new" ? "إضافة تحليل جديد" : "تعديل التحليل"}
             </SheetTitle>
           </SheetHeader>

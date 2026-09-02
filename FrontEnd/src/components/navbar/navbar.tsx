@@ -37,13 +37,11 @@ export default function Navbar() {
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
         <Link href="/" className="flex items-center gap-2 group shrink-0">
-          <div className="w-8 h-8 rounded-lg bg-[#263B3D] flex items-center justify-center group-hover:bg-[#1E3032] transition-colors">
             <FlaskConical
-              size={16}
+              size={23}
               className="text-[#5E9C91]"
               strokeWidth={2}
             />
-          </div>
 
           <div className="flex flex-col leading-none">
             <span className="text-[#263B3D] text-base font-bold tracking-tight">
@@ -107,20 +105,18 @@ export default function Navbar() {
               className="w-full sm:max-w-sm p-0 border-[#D9E1E0]"
               dir="rtl"
             >
-              <SheetHeader className="px-4 pt-5 pb-4 border-b border-[#D9E1E0]">
+              <SheetHeader className="mt-5 px-4 pt-5 pb-4 border-b border-[#D9E1E0]">
                 <SheetTitle className="text-right text-[#263B3D]">
                   <Link
                     href="/"
                     onClick={() => setMobileOpen(false)}
                     className="flex items-center gap-2"
                   >
-                    <div className="w-8 h-8 rounded-lg bg-[#263B3D] flex items-center justify-center">
-                      <FlaskConical
-                        size={16}
-                        className="text-[#5E9C91]"
-                        strokeWidth={2}
-                      />
-                    </div>
+                    <FlaskConical
+                      size={23}
+                      className="text-[#5E9C91]"
+                      strokeWidth={2}
+                    />
 
                     <div className="flex flex-col leading-none">
                       <span className="text-[#263B3D] text-base font-bold tracking-tight">

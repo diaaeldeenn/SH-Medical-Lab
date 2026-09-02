@@ -236,7 +236,7 @@ export default function ParameterFieldsetItem({
               {fields.map((range, rangeIndex) => (
                 <div
                   key={range.id}
-                  className="grid grid-cols-2 md:grid-cols-6 gap-2 items-end bg-[#F4F7F6] rounded-lg p-3"
+                  className="grid grid-cols-2 md:grid-cols-3 gap-2 items-end bg-[#F4F7F6] rounded-lg p-3"
                 >
                   <Controller
                     name={`parameters.${index}.referenceRanges.${rangeIndex}.gender`}

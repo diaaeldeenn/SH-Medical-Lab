@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 
 import AboutReveal, { AboutRevealItem } from "@/components/about/AboutReveal";
-import Footer from "@/components/footer";
 
 const values = [
   {
@@ -487,7 +486,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-      <Footer />
     </main>
   );
 }

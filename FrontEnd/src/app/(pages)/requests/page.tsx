@@ -6,6 +6,7 @@ import { authOptions } from "@/lib/nextAuth/auth";
 import { getMyRequest } from "@/action/request.action";
 import RequestsPagination from "@/components/home/RequestsPagination";
 import { RequestsList } from "@/components/request/RequestsList";
+import RequestsTransition from "@/components/ui/RequestsTransition";
 
 const LIMIT = 10;
 
@@ -73,7 +74,10 @@ export default async function Requests({
           </div>
         ) : (
           <>
-            <RequestsList requests={requests} />
+            <RequestsTransition>
+              <RequestsList requests={requests} />
+            </RequestsTransition>
+
             {totalPages > 1 ? (
               <RequestsPagination
                 currentPage={currentPage}
