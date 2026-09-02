@@ -85,31 +85,26 @@ export default function TestForm({
     name: "parameters",
   });
 
-const onSubmit = async (data: CreateTestType) => {
-  setIsLoading(true);
+  const onSubmit = async (data: CreateTestType) => {
+    setIsLoading(true);
 
-  try {
-    const response = initialData
-      ? await updateTest(data, initialData._id)
-      : await createTest(data);
+    try {
+      if (initialData) {
+        await updateTest(data, initialData._id);
+        toast.success("تم تحديث التحليل بنجاح");
+      } else {
+        await createTest(data);
+        toast.success("تم إضافة التحليل بنجاح");
+      }
 
-    if (!response.success) {
-      toast.error(response.message);
-      return;
+      router.refresh();
+      onSuccess();
+    } catch (error: any) {
+      toast.error(error?.message || "حدث خطأ أثناء حفظ التحليل");
+    } finally {
+      setIsLoading(false);
     }
-
-    toast.success(
-      initialData
-        ? "تم تحديث التحليل بنجاح"
-        : "تم إضافة التحليل بنجاح",
-    );
-
-    router.refresh();
-    onSuccess();
-  } finally {
-    setIsLoading(false);
-  }
-};
+  };
 
   return (
     <form
