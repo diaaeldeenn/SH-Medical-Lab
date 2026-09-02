@@ -146,7 +146,7 @@ export default function SpecialistTestsList({
           {activeTest && activeTest.schema && (
             <>
               <SheetHeader>
-                <SheetTitle className="text-[#20292A]">
+                <SheetTitle className="text-[#20292A] mt-5">
                   {activeTest.testName}
                 </SheetTitle>
               </SheetHeader>

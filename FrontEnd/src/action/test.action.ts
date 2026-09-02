@@ -20,22 +20,13 @@ export const createTest = async (payload: CreateTestType) => {
   const response = await request.json();
 
   if (!request.ok) {
-    return {
-      success: false,
-      message: response.message || "فشل إضافة التحليل",
-    };
+    throw new Error(response.message || "Request failed");
   }
 
-  return {
-    success: true,
-    data: response,
-  };
+  return response;
 };
 
-export const updateTest = async (
-  payload: UpdateTestType,
-  testId: string,
-) => {
+export const updateTest = async (payload: UpdateTestType, testId: string) => {
   const token = await authToken();
 
   const request = await fetch(`${baseUrl}/test/${testId}`, {
@@ -50,16 +41,10 @@ export const updateTest = async (
   const response = await request.json();
 
   if (!request.ok) {
-    return {
-      success: false,
-      message: response.message || "فشل تحديث التحليل",
-    };
+    throw new Error(response.message || "Request failed");
   }
 
-  return {
-    success: true,
-    data: response,
-  };
+  return response;
 };
 
 export const deleteTest = async (testId: string) => {
@@ -76,16 +61,10 @@ export const deleteTest = async (testId: string) => {
   const response = await request.json();
 
   if (!request.ok) {
-    return {
-      success: false,
-      message: response.message || "فشل حذف التحليل",
-    };
+    throw new Error(response.message || "Request failed");
   }
 
-  return {
-    success: true,
-    data: response,
-  };
+  return response;
 };
 
 export const getTestById = async (testId: string) => {
@@ -102,14 +81,8 @@ export const getTestById = async (testId: string) => {
   const response = await request.json();
 
   if (!request.ok) {
-    return {
-      success: false,
-      message: response.message || "فشل تحميل التحليل",
-    };
+    throw new Error(response.message || "Request failed");
   }
 
-  return {
-    success: true,
-    data: response,
-  };
+  return response;
 };
